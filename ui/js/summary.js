@@ -62,8 +62,11 @@ $('.modal').modal();
 	}
 
 	$(document).ready(function(){
-		var votes = contractInstance.totalVotesFor('Modi', {from: web3.eth.accounts[0]});
+		var votes = contractInstance.totalVotesFor.call('Modi').toLocaleString();
 		console.log('votes' , votes);
+		let modiVoteCount = contractInstance.totalVotesFor('Modi', {from: web3.eth.accounts[0]}, function(e, data) {
+		    console.log("e, data", e, data);
+		});
 		//  function() {
 		//     alert('vote submited to Narendra Modi');
 		//     disable();

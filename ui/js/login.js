@@ -44,9 +44,11 @@ $(document).ready(function () {
 					var d = new Date();
 				    d.setTime(d.getTime() + (1*24*60*60*100));
 				    var expires = "expires="+ d.toUTCString();
+
 				    document.cookie = 'auth' + "=" + data.message.password + ";" + expires + ";path=/";
+					document.cookie = 'username' + "=" + data.message.username + ";" + expires + ";path=/";
 					if(data.message.username == 'admin'){
-						window.location = '/app';
+						window.location = '/summary';
 					}
 					else{
 						window.location = '/app';

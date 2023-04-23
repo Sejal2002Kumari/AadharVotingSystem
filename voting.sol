@@ -26,6 +26,7 @@ contract Voting {
   // This function returns the total votes a candidate has received so far
   function totalVotesFor(bytes32 candidate) returns (uint8) {
     if (validCandidate(candidate) == false) throw;
+    //console.log("votes recieved " , votesReceived[candidate]);
     return votesReceived[candidate];
   }
 

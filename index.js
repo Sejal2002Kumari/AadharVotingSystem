@@ -47,7 +47,7 @@ app.post('/login', function(req, res) {
 });
 app.post('/register', function(req, res) {
 	console.log("Register called");
-    debugger;
+    
 
 	console.log(req.body);
     username = req.body.username;
@@ -105,24 +105,25 @@ app.get('/app', function(req, res){
 	console.log("----------------");
 	var cookie_pass = req.cookies['auth'];
 	var cookie_otp = req.cookies['show'];
-	console.log("0==", cookie_otp , cookie_pass);
-	if (passwordHash.verify('password', cookie_pass) && cookie_otp != null) {
-		//res.sendFile(path.join(__dirname, 'ui', 'clist.html'));
-		console.log("1=", cookie_otp , cookie_pass);
-		res.redirect('/info');
-		
-		
+	var cookie_username = req.cookies['username'];
+	// console.log("0==", cookie_otp , cookie_pass);
 
-	} else if (cookie_otp == null && passwordHash.verify('password', cookie_pass)) {
-		console.log("2=" , cookie_otp , cookie_pass);
+	const JSONdb = require('simple-json-db');
+	const db = new JSONdb('users.json');
+	const userPass = db.get(cookie_username);
+	if (passwordHash.verify(userPass || 'password', cookie_pass) && cookie_otp != null) {
+		res.redirect('/info');
+	} 
+	else if (cookie_otp == null && passwordHash.verify(userPass || 'password', cookie_pass)) {
 		res.sendFile(path.join(__dirname, 'ui', 'app.html'));
 	}
 	else {
-		console.log("3=" , cookie_otp , cookie_pass);
 		res.redirect('/');
 	}
 	
 });
+
+
 app.get('/summary', function(req, res){
 	var cookie_pass = req.cookies['auth'];
 	//var cookie_otp = req.cookies['show'];

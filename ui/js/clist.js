@@ -56,6 +56,7 @@ $('.modal').modal();
 		    document.cookie = "show=John Doe; expires=Thu, 18 Dec 2013 12:00:00 UTC";
 		    document.cookie = "aadhaar=John Doe; expires=Thu, 18 Dec 2013 12:00:00 UTC";
 			document.cookie = 'auth' +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+			document.cookie = 'username' +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 		    window.location = '/';
 
 
