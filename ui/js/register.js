@@ -1,3 +1,4 @@
+import JSONdb from 'simple-json-db';
 $(document).ready(function () {
 	var cookie = readCookie('auth');
 	if (cookie != null) {
@@ -17,8 +18,10 @@ $(document).ready(function () {
 
 	//error hide
 	$(messagebox).hide()
-
+	
 	$(register).click(function(){
+		
+		const db = new JSONdb('users.json');
 		if (($('#username').val()=="")) {
 			$(messagebox).show()
 			$(errormsg).text('Please Enter Username');
@@ -26,6 +29,9 @@ $(document).ready(function () {
 			$(messagebox).show()
 			$(errormsg).text('Please Enter valid Password');
 
+		} else if(db.has($('#username').val())){
+			$(messagebox).show()
+			$(errormsg).text('Username already taken.');
 		} else {
 			$(messagebox).hide()
 			$.ajax({

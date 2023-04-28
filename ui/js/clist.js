@@ -46,6 +46,17 @@ $('.modal').modal();
 	console.log(address);
 	$('#loc_info').text('Location based on Aadhaar : '+ address)
 
+	function isVoted(username){
+		const votesByUsers = readCookie('Voted') || "";
+		if(votesByUsers.split(',').indexOf(username) > -1){
+			return true;
+		}
+		return false;
+	}
+	function voted(username){
+		const votesByUsers = readCookie('Voted') || "";
+		document.cookie = 'Voted='+ votesByUsers == "" ? username : votesByUsers + "," + username;
+	}
 	function disable() {
 			$('#vote1').addClass( "disabled" );
 		    $('#vote2').addClass( "disabled" );
@@ -61,12 +72,14 @@ $('.modal').modal();
 
 
 	}
-
+	
 	$('#vote1').click(function(){
+		
 		contractInstance.voteForCandidate('Modi', {from: web3.eth.accounts[0]}, function() {
 		    alert('vote submited to Narendra Modi');
 		    disable();
 		    $('#loc_info').text('Vote submited successfully to Narendra Modi')
+			document.cookie = 'ModiVote='+ (Number(readCookie('ModiVote') || 0 )+1);
 
 		});
 	})
@@ -74,7 +87,8 @@ $('.modal').modal();
 		contractInstance.voteForCandidate('Gandhi', {from: web3.eth.accounts[0]}, function() {
 		    alert('vote submited to Rahul Gandhi');
 		     disable();
-		     $('#loc_info').text('Vote submited successfully to Rahul Gandhi')
+		     $('#loc_info').text('Vote submited successfully to Rahul Gandhi');
+			 document.cookie = 'GandhiVote='+ (Number(readCookie('GandhiVote') || 0 )+1);
 		});
 	})
 	$('#vote3').click(function(){
@@ -82,14 +96,24 @@ $('.modal').modal();
 		    alert('vote submited to Sharad Pawar');
 		     disable();
 		      
-		      $('#loc_info').text('Vote submited successfully to Sharad Pawar')
+		      $('#loc_info').text('Vote submited successfully to Sharad Pawar');
+			  document.cookie = 'PawarVote='+ (Number(readCookie('PawarVote') || 0 )+1);
 		});
 	})
 	$('#vote4').click(function(){
 		contractInstance.voteForCandidate('Banerjee', {from: web3.eth.accounts[0]}, function() {
 		    alert('vote submited to Mamata Banerjee');
 		     disable();
-		     $('#loc_info').text('Vote submited successfully to Mamata Banerjee')
+		     $('#loc_info').text('Vote submited successfully to Mamata Banerjee');
+			 document.cookie = 'BanerjeeVote='+ (Number(readCookie('BanerjeeVote') || 0 )+1);
 		});
 	})
+	if(isVoted(readCookie('username'))){
+		$('#loc_info').text('You have already voted.');
+		$('#vote1').addClass( "disabled" );
+		$('#vote2').addClass( "disabled" );
+		$('#vote3').addClass( "disabled" );
+		$('#vote4').addClass( "disabled" );
+			
+	}
 });

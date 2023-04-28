@@ -37,7 +37,7 @@
             <img src="images/e-voting-logo.png" alt="" height="120" width="350" style="padding-left: 250px"; >
            
               <div class="brand-logo center"><h3 style="color: black">Election Commission Of India</h3></div>
-
+              <span style="float: right; margin-right: 12px;"><a href="#" id="logout">LOGOUT</a></span>
            </div>
         </nav>
     </man>
@@ -49,7 +49,7 @@
   <div class="container">
    <div id="card-alert" class="card light-blue lighten-5">
                       <div class="card-content light-blue-text">
-                        <p id="loc_info">NEWS : You have done 5 actions.</p>
+                        <p id="loc_info"></p>
                       </div>
                     </div>
   <table>
@@ -121,4 +121,28 @@
 <script src="https://cdn.jsdelivr.net/npm/web3@0.19.1/dist/web3.min.js"></script>
 
 <script type="text/javascript" src="js/summary.js"></script>
+<script type="text/javascript">
+  $('#logout').click(function(){
+          document.cookie = "show=John Doe; expires=Thu, 18 Dec 2013 12:00:00 UTC";
+      document.cookie = "aadhaar=John Doe; expires=Thu, 18 Dec 2013 12:00:00 UTC";
+    document.cookie = 'auth' +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    document.cookie = 'username' +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+      window.location = '/';
+
+  });
+  function readCookie(name) {
+  var nameEQ = name + "=";
+  var ca = document.cookie.split(';');
+  for(var i=0;i < ca.length;i++) {
+      var c = ca[i];
+      while (c.charAt(0)==' ') c = c.substring(1,c.length);
+      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+  }
+  return null;
+}
+  var isLoggedIn = readCookie('auth') || '' == '' ? false : true;
+  if(isLoggedIn ){
+      $('#logout').hide();
+  }
+</script>
 </html>

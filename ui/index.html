@@ -15,6 +15,7 @@
             <div style="margin-top: 47%;">
                 <div>
                     <h1 class="logo-name"></h1>
+                    <!-- <span><a href="#" id="logout">LOGOUT</a></span> -->
                 </div>
                 <h3 style="color: #c25323;">Welcome to Aadhaar-Voting System</h3>
                 
@@ -27,8 +28,8 @@
                         <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
                     </div>
                     <button id="login" class="btn btn-primary block full-width m-b login">Login</button>
-                <br/>
-                    <a href="register.html">New user register here</a>
+                
+                    <a href="register.html" style="color: #0b0b0b; font-size: larger;" >New user register here</a>
                 </div>
                 <br>
                 <div id="messagebox" class="alert alert-danger fade in">
@@ -54,6 +55,30 @@
   crossorigin="anonymous"></script> 
 
   <script type="text/javascript" src="js/login.js"></script>
+  <!-- <script type="text/javascript">
+    $('#logout').click(function(){
+            document.cookie = "show=John Doe; expires=Thu, 18 Dec 2013 12:00:00 UTC";
+		    document.cookie = "aadhaar=John Doe; expires=Thu, 18 Dec 2013 12:00:00 UTC";
+			document.cookie = 'auth' +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+			document.cookie = 'username' +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+		    window.location = '/';
+
+    });
+    function readCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+	}
+    var isLoggedIn = readCookie('auth') || '' == '' ? false : true;
+    if(isLoggedIn ){
+        $('#logout').hide();
+    }
+  </script> -->
     </body>
 
   
