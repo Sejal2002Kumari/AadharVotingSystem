@@ -1,11 +1,11 @@
 
 
 
-$(document).ready(function() {
-$('.modal').modal();
+$(document).ready(function () {
+	$('.modal').modal();
 	// $.ajax({
- //    url: '/getaddress',
- //    method: 'post'
+	//    url: '/getaddress',
+	//    method: 'post'
 	// }).done(function(){
 	// 	console.log('done');
 	// });
@@ -21,14 +21,14 @@ $('.modal').modal();
 
 	//check cookie
 	function readCookie(name) {
-    var nameEQ = name + "=";
-    var ca = document.cookie.split(';');
-    for(var i=0;i < ca.length;i++) {
-        var c = ca[i];
-        while (c.charAt(0)==' ') c = c.substring(1,c.length);
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-    }
-    return null;
+		var nameEQ = name + "=";
+		var ca = document.cookie.split(';');
+		for (var i = 0; i < ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+			if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+		}
+		return null;
 	}
 
 	var aadhaar_list = {
@@ -44,76 +44,84 @@ $('.modal').modal();
 	console.log(aadhaar);
 	var address = aadhaar_list[aadhaar];
 	console.log(address);
-	$('#loc_info').text('Location based on Aadhaar : '+ address)
+	$('#loc_info').text('Location based on Aadhaar : ' + address)
 
-	function isVoted(username){
+	function isVoted(usernameaddhaar) {
 		const votesByUsers = readCookie('Voted') || "";
-		if(votesByUsers.split(',').indexOf(username) > -1){
+		if (votesByUsers.split(',').indexOf(usernameaddhaar) > -1) {
 			return true;
 		}
 		return false;
 	}
-	function voted(username){
+	function voted(usernameaddhaar) {
 		const votesByUsers = readCookie('Voted') || "";
-		document.cookie = 'Voted='+ votesByUsers == "" ? username : votesByUsers + "," + username;
+		var d = new Date();
+		d.setTime(d.getTime() + (1*24*60*60*100));
+		var expires = "expires="+ d.toUTCString();
+		//document.cookie = 'Voted=' + votesByUsers == "" ? usernameaddhaar : votesByUsers + "," + usernameaddhaar;
+		document.cookie = 'Voted' + "=" + (votesByUsers == "" ? usernameaddhaar : votesByUsers + "," + usernameaddhaar) + ";" + expires + ";path=/";
 	}
 	function disable() {
-			$('#vote1').addClass( "disabled" );
-		    $('#vote2').addClass( "disabled" );
-		    $('#vote3').addClass( "disabled" );
-		    $('#vote4').addClass( "disabled" );
-		    
-		    //logout
-		    document.cookie = "show=John Doe; expires=Thu, 18 Dec 2013 12:00:00 UTC";
-		    document.cookie = "aadhaar=John Doe; expires=Thu, 18 Dec 2013 12:00:00 UTC";
-			document.cookie = 'auth' +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-			document.cookie = 'username' +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-		    window.location = '/';
+		$('#vote1').addClass("disabled");
+		$('#vote2').addClass("disabled");
+		$('#vote3').addClass("disabled");
+		$('#vote4').addClass("disabled");
+
+		//logout
+		document.cookie = "show=John Doe; expires=Thu, 18 Dec 2013 12:00:00 UTC";
+		document.cookie = "aadhaar=John Doe; expires=Thu, 18 Dec 2013 12:00:00 UTC";
+		document.cookie = 'auth' + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+		document.cookie = 'username' + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+		window.location = '/';
 
 
 	}
-	
-	$('#vote1').click(function(){
-		
-		contractInstance.voteForCandidate('Modi', {from: web3.eth.accounts[0]}, function() {
-		    alert('vote submited to Narendra Modi');
-		    disable();
-		    $('#loc_info').text('Vote submited successfully to Narendra Modi')
-			document.cookie = 'ModiVote='+ (Number(readCookie('ModiVote') || 0 )+1);
 
+	$('#vote1').click(function () {
+
+		contractInstance.voteForCandidate('Modi', { from: web3.eth.accounts[0] }, function () {
+			alert('vote submited to Narendra Modi');
+			voted(readCookie('aadhaar'));
+			disable();
+			$('#loc_info').text('Vote submited successfully to Narendra Modi')
+			document.cookie = 'ModiVote=' + (Number(readCookie('ModiVote') || 0) + 1);
 		});
 	})
-	$('#vote2').click(function(){
-		contractInstance.voteForCandidate('Gandhi', {from: web3.eth.accounts[0]}, function() {
-		    alert('vote submited to Rahul Gandhi');
-		     disable();
-		     $('#loc_info').text('Vote submited successfully to Rahul Gandhi');
-			 document.cookie = 'GandhiVote='+ (Number(readCookie('GandhiVote') || 0 )+1);
+	$('#vote2').click(function () {
+		contractInstance.voteForCandidate('Gandhi', { from: web3.eth.accounts[0] }, function () {
+			alert('vote submited to Rahul Gandhi');
+			voted(readCookie('aadhaar'));
+			disable();
+			$('#loc_info').text('Vote submited successfully to Rahul Gandhi');
+			document.cookie = 'GandhiVote=' + (Number(readCookie('GandhiVote') || 0) + 1);
 		});
 	})
-	$('#vote3').click(function(){
-		contractInstance.voteForCandidate('Pawar', {from: web3.eth.accounts[0]}, function() {
-		    alert('vote submited to Sharad Pawar');
-		     disable();
-		      
-		      $('#loc_info').text('Vote submited successfully to Sharad Pawar');
-			  document.cookie = 'PawarVote='+ (Number(readCookie('PawarVote') || 0 )+1);
+	$('#vote3').click(function () {
+		contractInstance.voteForCandidate('Pawar', { from: web3.eth.accounts[0] }, function () {
+			alert('vote submited to Sharad Pawar');
+			voted(readCookie('aadhaar'));
+			disable();
+
+			$('#loc_info').text('Vote submited successfully to Sharad Pawar');
+			document.cookie = 'PawarVote=' + (Number(readCookie('PawarVote') || 0) + 1);
 		});
 	})
-	$('#vote4').click(function(){
-		contractInstance.voteForCandidate('Banerjee', {from: web3.eth.accounts[0]}, function() {
-		    alert('vote submited to Mamata Banerjee');
-		     disable();
-		     $('#loc_info').text('Vote submited successfully to Mamata Banerjee');
-			 document.cookie = 'BanerjeeVote='+ (Number(readCookie('BanerjeeVote') || 0 )+1);
+	$('#vote4').click(function () {
+		contractInstance.voteForCandidate('Banerjee', { from: web3.eth.accounts[0] }, function () {
+			alert('vote submited to Mamata Banerjee');
+			voted(readCookie('aadhaar'));
+			disable();
+			$('#loc_info').text('Vote submited successfully to Mamata Banerjee');
+			document.cookie = 'BanerjeeVote=' + (Number(readCookie('BanerjeeVote') || 0) + 1);
 		});
 	})
-	if(isVoted(readCookie('username'))){
+
+	if (isVoted(readCookie('aadhaar'))) {
 		$('#loc_info').text('You have already voted.');
-		$('#vote1').addClass( "disabled" );
-		$('#vote2').addClass( "disabled" );
-		$('#vote3').addClass( "disabled" );
-		$('#vote4').addClass( "disabled" );
-			
+		$('#vote1').addClass("disabled");
+		$('#vote2').addClass("disabled");
+		$('#vote3').addClass("disabled");
+		$('#vote4').addClass("disabled");
+
 	}
 });
